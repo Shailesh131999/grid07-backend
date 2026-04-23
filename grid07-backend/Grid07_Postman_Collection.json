@@ -1,0 +1,112 @@
+{
+  "info": {
+    "name": "Grid07 Backend Assignment",
+    "_postman_id": "grid07-collection-v1",
+    "description": "API endpoints for Grid07 backend assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Post (Human Author)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/posts", "host": ["{{baseUrl}}"], "path": ["api", "posts"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"USER\",\n  \"content\": \"This is my first post on the platform!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Post (Bot Author)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/posts", "host": ["{{baseUrl}}"], "path": ["api", "posts"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"Hello humans, I am BotAlpha posting today.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Add Human Comment (top-level)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/posts/1/comments",
+          "host": ["{{baseUrl}}"], "path": ["api", "posts", "1", "comments"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"USER\",\n  \"content\": \"Nice post!\",\n  \"parentCommentId\": null,\n  \"targetUserId\": null\n}"
+        }
+      }
+    },
+    {
+      "name": "Add Bot Comment (top-level, triggers guardrails)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/posts/1/comments",
+          "host": ["{{baseUrl}}"], "path": ["api", "posts", "1", "comments"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"Interesting perspective!\",\n  \"parentCommentId\": null,\n  \"targetUserId\": 1\n}"
+        }
+      }
+    },
+    {
+      "name": "Add Nested Bot Reply (tests depth cap)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/posts/1/comments",
+          "host": ["{{baseUrl}}"], "path": ["api", "posts", "1", "comments"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"authorId\": 1,\n  \"authorType\": \"BOT\",\n  \"content\": \"Reply to a nested comment\",\n  \"parentCommentId\": 1,\n  \"targetUserId\": 1\n}"
+        }
+      }
+    },
+    {
+      "name": "Like a Post",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/posts/1/like",
+          "host": ["{{baseUrl}}"], "path": ["api", "posts", "1", "like"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": 1\n}"
+        }
+      }
+    },
+    {
+      "name": "Get Virality Score",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/posts/1/virality",
+          "host": ["{{baseUrl}}"], "path": ["api", "posts", "1", "virality"]
+        }
+      }
+    }
+  ]
+}
